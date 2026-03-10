@@ -1,1 +1,21 @@
+[
+{
+"titulo":"Departamento Santiago Centro",
+"precio":"450.000",
+"comuna":"Santiago",
+"foto":"https://images.unsplash.com/photo-1560185127-6ed189bf02f4",
+"lat":-33.4489,
+"lng":-70.6693,
+"link":"https://portal.com"
+},
 
+{
+"titulo":"Departamento Providencia",
+"precio":"680.000",
+"comuna":"Providencia",
+"foto":"https://images.unsplash.com/photo-1572120360610-d971b9d7767c",
+"lat":-33.426,
+"lng":-70.617,
+"link":"https://portal.com"
+}
+]
