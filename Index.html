@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Vértice Propiedades | Arriendos y Ventas en Santiago</title>
+
+<meta name="description" content="Arriendo, venta y administración de propiedades en Santiago. Publica tu propiedad con Vértice Propiedades.">
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+</head>
+
+<body>
+
+<header>
+
+<img src="logo.png" class="logo">
+
+<div class="menu-btn" onclick="toggleMenu()">☰</div>
+
+</header>
+
+<nav id="menu">
+
+<a href="#inicio">Inicio</a>
+<a href="#propiedades">Propiedades</a>
+<a href="#servicios">Servicios</a>
+<a href="#contacto">Contacto</a>
+
+</nav>
+
+<section id="inicio" class="hero">
+
+<h1>Encuentra tu próxima propiedad</h1>
+
+<input id="buscar" placeholder="Buscar por comuna">
+
+<button onclick="buscar()">Buscar</button>
+
+</section>
+
+<section id="propiedades">
+
+<h2>Propiedades disponibles</h2>
+
+<div id="lista"></div>
+
+<div id="map"></div>
+
+</section>
+
+<section id="servicios">
+
+<h2>Servicios</h2>
+
+<div class="servicios-grid">
+
+<div>
+
+<h3>Arriendo de propiedades</h3>
+<p>Gestionamos arriendos seguros con evaluación de arrendatarios.</p>
+
+</div>
+
+<div>
+
+<h3>Venta de propiedades</h3>
+<p>Publicación profesional y difusión en múltiples portales.</p>
+
+</div>
+
+<div>
+
+<h3>Administración</h3>
+<p>Gestión completa de propiedades para inversionistas.</p>
+
+</div>
+
+<div>
+
+<h3>Informe DICOM</h3>
+<p>Evaluación financiera de arrendatarios.</p>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="contacto">
+
+<h2>Contacto</h2>
+
+<p>Santiago de Chile</p>
+
+<a class="whatsapp" href="https://wa.me/56963935076">Contactar por WhatsApp</a>
+
+</section>
+
+<a class="floating" href="https://wa.me/56963935076">WhatsApp</a>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+function toggleMenu(){
+
+let m=document.getElementById("menu");
+
+m.style.left = m.style.left=="0px" ? "-200px":"0px";
+
+}
+
+let mapa = L.map('map').setView([-33.45,-70.66],12);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapa);
+
+let propiedades=[];
+
+fetch("propiedades.json")
+.then(res=>res.json())
+.then(data=>{
+
+propiedades=data;
+
+mostrar(data);
+
+});
+
+function mostrar(lista){
+
+let cont=document.getElementById("lista");
+
+cont.innerHTML="";
+
+lista.forEach(p=>{
+
+let card=`
+
+<div class="card">
+
+<img src="${p.foto}">
+
+<h3>${p.titulo}</h3>
+
+<p>$${p.precio}</p>
+
+<p>${p.comuna}</p>
+
+<a href="${p.link}" target="_blank">Ver propiedad</a>
+
+</div>
+
+`;
+
+cont.innerHTML+=card;
+
+L.marker([p.lat,p.lng]).addTo(mapa)
+.bindPopup(p.titulo);
+
+});
+
+}
+
+function buscar(){
+
+let texto=document.getElementById("buscar").value.toLowerCase();
+
+let resultado=propiedades.filter(p=>p.comuna.toLowerCase().includes(texto));
+
+mostrar(resultado);
+
+}
+
+</script>
+
+</body>
+</html>
